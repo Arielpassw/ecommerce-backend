@@ -14,6 +14,8 @@ import { RegisterDto } from './dto/register.dto';
 
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
+import { Roles } from './decorators/roles.decorator';
+import { RolesGuard } from './guards/roles.guard';
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
@@ -33,4 +35,14 @@ export class AuthController {
   getProfile(@Req() req) {
     return req.user;
   }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN')
+  @Get('admin')
+  adminRoute(){
+    return{ 
+      message: 'Welcome Admin',
+    };
+  }
+
 }
