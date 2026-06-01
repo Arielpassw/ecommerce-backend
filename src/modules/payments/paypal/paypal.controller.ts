@@ -15,13 +15,13 @@ import { CreatePaypalOrderDto } from './dto/create-paypal-order.dto';
 import { CapturePaypalOrderDto } from './dto/capture-paypal-order.dto';
 
 @Controller('payments/paypal')
-@UseGuards(JwtAuthGuard)
 export class PaypalController {
   constructor(
     private readonly paypalService: PaypalService,
   ) {}
 
   @Post('create-order')
+  @UseGuards(JwtAuthGuard)
   createOrder(
     @Body()
     createPaypalOrderDto: CreatePaypalOrderDto,
@@ -32,6 +32,7 @@ export class PaypalController {
   }
 
   @Post('capture-order')
+  @UseGuards(JwtAuthGuard)
   captureOrder(
     @Body()
     capturePaypalOrderDto: CapturePaypalOrderDto,
@@ -44,17 +45,13 @@ export class PaypalController {
   @Get('success')
   paypalSuccess(
     @Query('token') token: string,
-
     @Query('PayerID') payerId: string,
   ) {
     return {
       success: true,
-
       message:
         'PayPal payment approved successfully',
-
       token,
-
       payerId,
     };
   }
@@ -63,9 +60,7 @@ export class PaypalController {
   paypalCancel() {
     return {
       success: false,
-
-      message:
-        'PayPal payment cancelled',
+      message: 'PayPal payment cancelled',
     };
   }
 }
