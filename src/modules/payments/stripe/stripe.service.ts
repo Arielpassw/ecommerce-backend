@@ -62,8 +62,9 @@ export class StripeService {
                       'Ecommerce Order Payment',
                   },
 
-                  unit_amount:
+                  unit_amount: Math.round(
                     amount * 100,
+                  ),
                 },
 
                 quantity: 1,

@@ -17,7 +17,7 @@ import { CreateStripeSessionDto } from './dto/create-stripe-session.dto';
 export class StripeController {
   constructor(
     private readonly stripeService: StripeService,
-  ) {}
+  ) { }
 
   @Post('create-checkout-session')
   @UseGuards(JwtAuthGuard)
@@ -35,17 +35,23 @@ export class StripeController {
     @Query('session_id')
     sessionId: string,
   ) {
-    return this.stripeService.handleSuccess(
+    await this.stripeService.handleSuccess(
       sessionId,
     );
+
+    return {
+      success: true,
+      message:
+        'Stripe payment completed successfully',
+      sessionId,
+    };
   }
 
   @Get('cancel')
   stripeCancel() {
     return {
       success: false,
-      message:
-        'Stripe payment cancelled',
+      message: 'Stripe payment cancelled',
     };
   }
 }
